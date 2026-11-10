@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matteo Cagiada</title>
+<meta name="description" content="Matteo Cagiada: research, software and publications.">
+<link rel="icon" href="assets/photo.jpg">
+<style>
+  /* Same tokens as https://matteo-cagiada.github.io/mmcif-tools/ */
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f7f5;
+    --surface: #ffffff;
+    --text: #1d1d1b;
+    --muted: #5f5e5a;
+    --border: #dcdbd6;
+    --accent: #1f5fbf;
+    --code-bg: #f0efeb;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161615;
+      --surface: #1f1f1d;
+      --text: #ecebe6;
+      --muted: #a7a59d;
+      --border: #3a3936;
+      --accent: #7aa7ec;
+      --code-bg: #2a2a27;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .page { max-width: 880px; margin: 0 auto; padding: 48px 16px 64px; }
+  a { color: var(--accent); }
+  h1 { font-size: 2.4rem; line-height: 1.1; margin: 0 0 8px; }
+  h2 { font-size: 1.2rem; margin: 0 0 8px; }
+  .lede { margin: 0 0 16px; color: var(--muted); font-size: 1.1rem; max-width: 65ch; }
+
+  .intro { display: flex; gap: 24px; align-items: flex-start; }
+  .intro img { width: 96px; height: 96px; border-radius: 50%; border: 1px solid var(--border); flex: none; }
+  .role { margin: 0 0 12px; color: var(--muted); }
+  @media (max-width: 520px) {
+    .intro { flex-direction: column; gap: 16px; }
+    h1 { font-size: 2rem; }
+  }
+
+  .links { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0; padding: 0; list-style: none; }
+  .links a { font-weight: 600; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 16px 0 0;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: inherit;
+    text-decoration: none;
+  }
+  .card:hover, .card:focus-visible { border-color: var(--accent); }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .card p { margin: 0 0 16px; color: var(--muted); flex: 1; }
+  .card .go { color: var(--accent); font-weight: 600; }
+  .card .meta { font: 0.8rem/1.4 var(--mono); color: var(--muted); margin: 0 0 12px; }
+
+  section { margin: 48px 0 0; }
+  .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .section-head a { font-size: 0.9rem; }
+
+  .repos { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--border); }
+  .repos li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .repos .name { font: 600 0.95rem/1.4 var(--mono); }
+  .repos .desc { margin: 2px 0 0; color: var(--muted); font-size: 0.95rem; }
+  .repos .meta { font: 0.8rem/1.4 var(--mono); color: var(--muted); margin-top: 4px; }
+
+  .pubs { list-style: none; margin: 16px 0 0; padding: 0; }
+  .pubs li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .pubs li:first-child { border-top: 1px solid var(--border); }
+  .pubs .title { font-weight: 600; color: var(--text); text-decoration: none; }
+  .pubs a.title:hover { color: var(--accent); text-decoration: underline; }
+  .pubs .authors { margin: 2px 0 0; color: var(--muted); font-size: 0.9rem; }
+  .pubs .venue { margin: 2px 0 0; font-size: 0.9rem; }
+  .pubs .venue i { color: var(--text); }
+  .me { color: var(--text); font-weight: 600; }
+  .more { margin: 12px 0 0; }
+  .more button {
+    font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; font-weight: 600;
+  }
+  .note { color: var(--muted); font-size: 0.9rem; margin: 12px 0 0; }
+
+  footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<!--
+  ===================================================================
+  EDIT HERE: your details. Leave a value as "" to hide that item.
+  ===================================================================
+-->
+<script>
+  const CONFIG = {
+    github: "matteo-cagiada",
+    // ORCID iD, e.g. "0000-0002-1234-5678". Used to list your papers automatically (via OpenAlex).
+    orcid: "0000-0001-7281-5696",
+    // Google Scholar profile URL, e.g. "https://scholar.google.com/citations?user=XXXXXXXX".
+    scholar: "https://scholar.google.com/citations?user=6I8dlNMAAAAJ&hl=en",
+    // LinkedIn profile URL, e.g. "https://www.linkedin.com/in/your-handle/".
+    linkedin: "https://www.linkedin.com/in/matteo-cagiada-74455918b/",
+    // Public email addresses shown on the page (optional).
+    emails: [
+      { label: "Oxford", address: "matteo.cagiada@stats.ox.ac.uk" },
+      { label: "Copenhagen", address: "matteo.cagiada@bio.ku.dk" },
+    ],
+    // Put a file called cv.pdf next to this page and the CV link appears by itself.
+    // Set to "cv.pdf" (and add the file) to show it; "" hides the link.
+    cv: "",
+    // Papers OpenAlex misses: added to the automatic list.
+    extraPubs: [
+      { title: "Statistical mechanical properties of sequence space determine the efficiency of the various algorithms to predict interaction energies and native contacts from protein coevolution",
+        authors: "Franco G., Cagiada M., Bussi G., Tiana G.", venue: "Physical Biology", year: 2019,
+        url: "https://doi.org/10.1088/1478-3975/ab1c15" },
+    ],
+    // Papers to leave out of the automatic list: any part of the title, case-insensitive.
+    hidePubs: [
+      "Spectral Diffusion for Protein Dynamics", // workshop manuscript
+    ],
+    // Repositories to leave out of the automatic list (forks are always left out).
+    hideRepos: ["matteo-cagiada.github.io"],
+  };
+</script>
+
+<main class="page">
+  <header class="intro">
+    <img src="assets/photo.jpg" alt="Matteo Cagiada" width="96" height="96">
+    <div>
+      <h1>Matteo Cagiada</h1>
+      <!-- Your role and affiliation. -->
+      <p class="role">Novo Nordisk Foundation Postdoctoral Fellow · University of Oxford &amp; University of Copenhagen</p>
+      <!-- A short paragraph about your research. -->
+      <p class="lede">I study how proteins move. I use AI models, from protein language models to generative
+        and diffusion models, to predict conformational ensembles and side-chain dynamics, and
+        apply them to antibodies, TCRs, receptors and transporters to improve how new therapeutics are designed.</p>
+      <p class="role">With Charlotte Deane (OPIG, Statistics) and Philip Biggin (Biochemistry) in Oxford.
+        Before that, a PhD and postdoc with Kresten Lindorff-Larsen at the Linderstrøm-Lang Centre in
+        Copenhagen, on the effects of missense variants on protein stability and function, and a visit to
+        Sergey Ovchinnikov's lab at Harvard.</p>
+      <ul class="links" id="links">
+        <li><a href="https://github.com/matteo-cagiada">GitHub</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <section aria-labelledby="software-title">
+    <h2 id="software-title">Software</h2>
+    <div class="cards">
+      <a class="card" href="/mmcif-tools/">
+        <h2>mmcif-tools</h2>
+        <p>Small, pipeable command-line tools to select, edit and inspect mmCIF files. Runs in the browser
+          too, with nothing to install.</p>
+        <span class="go">Open mmcif-tools →</span>
+      </a>
+      <a class="card" href="https://github.com/matteo-cagiada/AF2chi_localcolabfold">
+        <h2>AF2χ</h2>
+        <p>Predicting protein side-chain rotamer distributions with AlphaFold2, implemented for localColabFold.</p>
+        <span class="go">Open the repository →</span>
+      </a>
+    </div>
+  </section>
+
+  <section aria-labelledby="pubs-title">
+    <div class="section-head">
+      <h2 id="pubs-title">Publications</h2>
+      <a id="scholar-link" href="" hidden>All on Google Scholar →</a>
+    </div>
+    <ol class="pubs" id="pubs"></ol>
+    <p class="more" id="pubs-more" hidden><button type="button">Show all</button></p>
+    <p class="note" id="pubs-note" hidden></p>
+  </section>
+
+  <section aria-labelledby="repos-title">
+    <div class="section-head">
+      <h2 id="repos-title">Code</h2>
+      <a href="https://github.com/matteo-cagiada?tab=repositories">All repositories on GitHub →</a>
+    </div>
+    <ul class="repos" id="repos">
+      <!-- Shown if the GitHub API cannot be reached; replaced by the live list otherwise. -->
+      <li><a class="name" href="https://github.com/matteo-cagiada/mmcif-tools">mmcif-tools</a>
+        <p class="desc">Read, parse, edit and write mmCIF files from the command line.</p></li>
+      <li><a class="name" href="https://github.com/matteo-cagiada/AF2chi_localcolabfold">AF2chi_localcolabfold</a>
+        <p class="desc">AF2chi implementation code for localColabFold.</p></li>
+    </ul>
+  </section>
+
+  <footer>
+    <span id="year"></span> Matteo Cagiada · Publication list from <a href="https://openalex.org">OpenAlex</a>,
+    code list from GitHub.
+  </footer>
+</main>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, props = {}, ...kids) => {
+    const n = Object.assign(document.createElement(tag), props);
+    n.append(...kids.filter((k) => k != null));
+    return n;
+  };
+  $("year").textContent = "© " + new Date().getFullYear();
+
+  // ---- Profile links -------------------------------------------------------
+  const links = $("links");
+  const addLink = (label, href) => links.append(el("li", {}, el("a", { href, textContent: label })));
+  if (CONFIG.scholar) addLink("Google Scholar", CONFIG.scholar);
+  if (CONFIG.orcid) addLink("ORCID", "https://orcid.org/" + CONFIG.orcid);
+  if (CONFIG.linkedin) addLink("LinkedIn", CONFIG.linkedin);
+  (CONFIG.emails || []).forEach((e) => addLink(`Email (${e.label})`, "mailto:" + e.address));
+  if (CONFIG.cv) {
+    // Only show the CV link when the file is actually there.
+    fetch(CONFIG.cv, { method: "HEAD" })
+      .then((r) => { if (r.ok) links.insertBefore(el("li", {}, el("a", { href: CONFIG.cv, textContent: "CV (PDF)" })), links.firstChild); })
+      .catch(() => {});
+  }
+  if (CONFIG.scholar) { $("scholar-link").href = CONFIG.scholar; $("scholar-link").hidden = false; }
+
+  // ---- Publications (OpenAlex, by ORCID) ----------------------------------
+  const pubsNote = (html) => { $("pubs-note").innerHTML = html; $("pubs-note").hidden = false; };
+  if (!CONFIG.orcid) {
+    pubsNote(CONFIG.scholar
+      ? `See my publications on <a href="${CONFIG.scholar}">Google Scholar</a>.`
+      : "Publications will appear here once an ORCID iD is set in the page config.");
+  } else {
+    const url = "https://api.openalex.org/works?per-page=100&sort=publication_date:desc"
+      + "&filter=author.orcid:" + encodeURIComponent(CONFIG.orcid);
+    fetch(url)
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(({ results }) => {
+        // Papers only (no datasets, software, abstracts), and one entry per title
+        // (a preprint and its published version share a title).
+        const PAPER_TYPES = ["article", "preprint", "review", "letter", "book-chapter", "book"];
+        const plain = (t) => t.replace(/<[^>]+>/g, "");
+        const hide = (CONFIG.hidePubs || []).map((h) => h.toLowerCase());
+        const seen = new Set();
+        const extras = (CONFIG.extraPubs || []).map((p) => ({ ...p, extra: true }));
+        const works = [...results, ...extras].filter((w) => {
+          if (!w.title || (!w.extra && !PAPER_TYPES.includes(w.type))) return false;
+          const title = plain(w.title).toLowerCase();
+          if (hide.some((h) => title.includes(h))) return false;
+          const key = title.replace(/[^a-z0-9]/g, "");
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        }).sort((a, b) => (b.year || b.publication_year || 0) - (a.year || a.publication_year || 0));
+        if (!works.length) throw new Error("empty");
+        const list = $("pubs");
+        const SHOW = 8;
+        works.forEach((w, i) => {
+          if (w.extra) {
+            const li = el("li", {},
+              el("a", { className: "title", href: w.url || CONFIG.scholar, textContent: w.title }),
+              el("p", { className: "authors", textContent: w.authors || "" }),
+              el("p", { className: "venue" }, w.venue ? el("i", { textContent: w.venue }) : null,
+                (w.venue ? ", " : "") + (w.year || "")));
+            if (i >= SHOW) li.hidden = true;
+            list.append(li);
+            return;
+          }
+          const href = w.doi || w.primary_location?.landing_page_url || w.id;
+          const names = w.authorships.map((a) => {
+            const isMe = (a.author.orcid || "").endsWith(CONFIG.orcid);
+            return isMe ? el("span", { className: "me", textContent: a.author.display_name })
+                        : document.createTextNode(a.author.display_name);
+          });
+          const authors = el("p", { className: "authors" });
+          const MAX = 12;
+          names.slice(0, MAX).forEach((n, j) => { if (j) authors.append(", "); authors.append(n); });
+          if (names.length > MAX) authors.append(", et al.");
+          const venue = (w.primary_location?.source?.display_name || "").replace(/\s*\(.*\)$/, "");
+          const li = el("li", {},
+            el("a", { className: "title", href, textContent: w.title.replace(/<[^>]+>/g, "") }),
+            authors,
+            el("p", { className: "venue" },
+              venue ? el("i", { textContent: venue }) : null,
+              (venue ? ", " : "") + (w.publication_year || "")));
+          if (i >= SHOW) li.hidden = true;
+          list.append(li);
+        });
+        if (works.length > SHOW) {
+          const more = $("pubs-more");
+          more.hidden = false;
+          more.querySelector("button").addEventListener("click", () => {
+            list.querySelectorAll("li[hidden]").forEach((li) => (li.hidden = false));
+            more.hidden = true;
+          });
+        }
+      })
+      .catch(() => pubsNote(CONFIG.scholar
+        ? `The publication list could not be loaded. See <a href="${CONFIG.scholar}">Google Scholar</a>.`
+        : "The publication list could not be loaded."));
+  }
+
+  // ---- Repositories (GitHub API) ------------------------------------------
+  fetch(`https://api.github.com/users/${CONFIG.github}/repos?per_page=100&sort=pushed`)
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then((repos) => {
+      const keep = repos.filter((r) => !r.fork && !r.archived && !CONFIG.hideRepos.includes(r.name));
+      if (!keep.length) return;
+      const list = $("repos");
+      list.replaceChildren(...keep.map((r) => {
+        const bits = [r.language, r.stargazers_count ? `★ ${r.stargazers_count}` : null,
+                      "updated " + new Date(r.pushed_at).toLocaleDateString("en-GB", { month: "short", year: "numeric" })];
+        return el("li", {},
+          el("a", { className: "name", href: r.homepage || r.html_url, textContent: r.name }),
+          r.description ? el("p", { className: "desc", textContent: r.description }) : null,
+          el("div", { className: "meta", textContent: bits.filter(Boolean).join(" · ") }));
+      }));
+    })
+    .catch(() => {}); // keep the static fallback list
+})();
+</script>
+</body>
+</html>
