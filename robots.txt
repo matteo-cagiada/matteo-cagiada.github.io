@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://matteo-cagiada.github.io/sitemap.xml
+Sitemap: https://matteo-cagiada.github.io/mmcif-tools/docs/sitemap.xml
